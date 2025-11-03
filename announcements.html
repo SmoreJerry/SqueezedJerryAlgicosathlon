@@ -1,1 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements - Algicosathlon Web Series</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #0a0a0a;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect fill="rgba(255,255,255,0.03)" width="50" height="50"/><rect fill="rgba(255,255,255,0.03)" x="50" y="50" width="50" height="50"/></svg>');
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100px); }
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        nav {
+            background: #1a1a1a;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #ff6b6b;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: #ff6b6b;
+        }
+
+        nav a.active {
+            color: #ff6b6b;
+            border-bottom: 2px solid #ff6b6b;
+            padding-bottom: 5px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin: 3rem 0 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .announcement {
+            background: #1a1a1a;
+            border-left: 5px solid #ff6b6b;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .announcement:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .announcement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .announcement-title {
+            color: #ff6b6b;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .announcement-date {
+            color: #aaa;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .announcement-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .announcement-badge.new {
+            background: #4cd964;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .announcement-content {
+            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .announcement-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #2d3436;
+            color: white;
+            border: 2px solid #ff6b6b;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #ff6b6b;
+            transform: scale(1.05);
+        }
+
+        footer {
+            background: #0a0a0a;
+            color: #aaa;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 2px solid #ff6b6b;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .announcement-title {
+                font-size: 1.4rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ALGICOSATHLON</h1>
+        <p>Official Announcements</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#trailer">Trailer</a></li>
+            <li><a href="index.html#episodes">Episodes</a></li>
+            <li><a href="index.html#cast">Cast</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="announcements.html" class="active">Announcements</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">📢 Latest News</h1>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">NEW Episodes</button>
+            <button class="filter-btn">Rejoins+Debuts</button>
+            <button class="filter-btn">Other</button>
+        </div>
+
+        <div class="announcement">
+            <div class="announcement-header">
+                <div>
+                    <h2 class="announcement-title">Day 1 is in the making!</h2>
+                    <span class="announcement-badge new">NEW</span>
+                    <span class="announcement-badge new">NEW Episodes</span>
+                </div>
+                <span class="announcement-date">November 3, 2025</span>
+            </div>
+            <div class="announcement-content">
+                <p>We're thrilled to announce that Algicosathlon Day 1 is coming out soon! Get your popcorn ready cuz its about time!</p>
+                <div class="announcement-image">Season 2 Announcement Image</div>
+            </div>
+        </div>
+
+        <div class="announcement">
+            <div class="announcement-header">
+                <div>
+                    <h2 class="announcement-title">Want to recommend a colour?</h2>
+                    <span class="announcement-badge">Other</span>
+                </div>
+                <span class="announcement-date">October 29, 2025</span>
+            </div>
+            <div class="announcement-content">
+                <p>Want to recommend a colour?Well now we have a google form to do it!Simply head on over to this google form and submit one!</p>
+            </div>
+        </div>
+
+        <div class="announcement">
+            <div class="announcement-header">
+                <div>
+                    <h2 class="announcement-title">🎬 Behind the Scenes: Cast Interviews</h2>
+                    <span class="announcement-badge">Cast News</span>
+                </div>
+                <span class="announcement-date">October 25, 2025</span>
+            </div>
+            <div class="announcement-content">
+                <p>Go behind the scenes with exclusive interviews from our amazing cast! Hear from Marcus Chen, Sarah Rodriguez, and the rest of the competitors as they share their experiences, favorite moments, and what it really took to compete in Algicosathlon.</p>
+                <div class="announcement-image">Cast Interview Photo</div>
+            </div>
+        </div>
+
+        <div class="announcement">
+            <div class="announcement-header">
+                <div>
+                    <h2 class="announcement-title">📱 Official App Now Available</h2>
+                    <span class="announcement-badge">App Launch</span>
+                </div>
+                <span class="announcement-date">October 20, 2025</span>
+            </div>
+            <div class="announcement-content">
+                <p>Download the official Algicosathlon app! Get exclusive content, participate in fan polls, receive push notifications for new episodes, and compete with other fans in our interactive challenges. Available now on iOS and Android.</p>
+            </div>
+        </div>
+
+        <div class="announcement">
+            <div class="announcement-header">
+                <div>
+                    <h2 class="announcement-title">🎥 Episode 5 Recap & Discussion</h2>
+                    <span class="announcement-badge">Episode Release</span>
+                </div>
+                <span class="announcement-date">October 18, 2025</span>
+            </div>
+            <div class="announcement-content">
+                <p>Episode 5 "The Reckoning" delivered one of the most intense moments in series history! Join the conversation in our forums and share your theories about who will win it all. Plus, check out our exclusive deleted scenes from this week's episode.</p>
+                <div class="announcement-image">Episode 5 Screenshot</div>
+            </div>
+        </div>
+
+        <div class="announcement">
+            <div class="announcement-header">
+                <div>
+                    <h2 class="announcement-title">🌟 Meet & Greet Event - New York City</h2>
+                    <span class="announcement-badge">Event</span>
+                </div>
+                <span class="announcement-date">October 15, 2025</span>
+            </div>
+            <div class="announcement-content">
+                <p>Join us for an exclusive meet and greet with the cast in New York City on November 15th! Limited tickets available. Get autographs, take photos, and ask your burning questions during our live Q&A panel. Tickets on sale now!</p>
+            </div>
+        </div>
+
+        <div class="announcement">
+            <div class="announcement-header">
+                <div>
+                    <h2 class="announcement-title">🎬 Series Premiere Success!</h2>
+                    <span class="announcement-badge">Milestone</span>
+                </div>
+                <span class="announcement-date">September 30, 2025</span>
+            </div>
+            <div class="announcement-content">
+                <p>Thank you for making our series premiere a record-breaking success! Episode 1 "The Gathering Storm" has become the most-watched web series premiere of the year. Your support means everything to us. Here's to an incredible season ahead!</p>
+                <div class="announcement-image">Premiere Celebration Image</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>  Algicosathlon series made by SqueezedJerry. Inspired by carykh.</p>
+        <p>  Follow my youtube channel! SqueezedJerry(@ෆSqueezedJerry)</p>
+    </footer>
+</body>
+</html>
